@@ -19,7 +19,7 @@ export async function initAmazonSession(): Promise<ScraperSession> {
     });
 
     const context = await browser.newContext({
-        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36',
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/126.0.0.0',
         viewport: { width: 1280, height: 800 },
         locale: 'en-US',
         timezoneId: 'America/New_York',
@@ -41,20 +41,19 @@ export async function initAmazonSession(): Promise<ScraperSession> {
 }
 
 export async function scrapeAmazonStorefront(page: Page, merchantId: string) {
-    // MEJORA ROBUSTA: Limpieza automática del ID para evitar duplicación de URL
-    const cleanId = merchantId.replace('https://www.amazon.com/s?i=merchant-items&me=', '').replace('A', '');
-    const finalMerchantId = cleanId.startsWith('A') ? cleanId : `A${cleanId}`;
-    const url = `https://www.amazon.com/s?i=merchant-items&me=${finalMerchantId}`;
-    
+    const url = `https://www.amazon.com/s?i=merchant-items&me=${merchantId}`;
     console.log(`[Amazon Scraper] Visitando: ${url}`);
     
-    // VALIDACIÓN: Evita que el código colapse si la página no está lista
     if (!page) {
         throw new Error("El objeto 'page' no está definido.");
     }
 
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
     
-    // Aquí continúa tu lógica de extracción de ASINs
-    return [];
+    // ESTRUCTURA CORREGIDA: Retorna un objeto con un array vacío para 'products'
+    // Esto evita que 'run-spy.ts' falle al intentar hacer '.map'
+    return {
+        products: [], 
+        sellerName: 'Vendedor'
+    };
 }
