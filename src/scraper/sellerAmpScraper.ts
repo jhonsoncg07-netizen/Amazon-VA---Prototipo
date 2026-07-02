@@ -17,8 +17,14 @@ export interface ScrapeResult {
 }
 
 export async function initAmazonSession(): Promise<ScraperSession> {
+  // En GitHub Actions siempre headless (no hay pantalla).
+  // En local, se puede activar el modo visible con SHOW_BROWSER=true en .env.local
+  const isHeadless = process.env.GITHUB_ACTIONS === 'true' || process.env.SHOW_BROWSER !== 'true';
+
+  console.log(`[Amazon Scraper] Modo navegador: ${isHeadless ? 'Headless (invisible)' : 'Headed (visible)'}`);
+
   const browser = await chromium.launch({
-    headless: false, 
+    headless: isHeadless,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
