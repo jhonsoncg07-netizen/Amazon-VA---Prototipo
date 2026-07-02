@@ -1,19 +1,28 @@
 import { Browser, Page, chromium } from 'playwright';
-import * as path from 'path';
 
 export interface ScraperSession {
   browser: Browser;
   page: Page;
 }
 
+export interface ScrapedProduct {
+  asin: string;
+  price: string;
+  sales: string;
+}
+
+export interface ScrapeResult {
+  sellerName: string;
+  products: ScrapedProduct[];
+}
+
 export async function initAmazonSession(): Promise<ScraperSession> {
-  // Lanzamos un navegador limpio e independiente sin problemas de perfiles bloqueados
   const browser = await chromium.launch({
-    headless: false, // Lo dejamos visible para poder monitorear qué hace en Amazon
+    headless: false, 
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
-      '--disable-blink-features=AutomationControlled' // Oculta que es un bot
+      '--disable-blink-features=AutomationControlled'
     ]
   });
 
@@ -26,51 +35,59 @@ export async function initAmazonSession(): Promise<ScraperSession> {
   return { browser, page };
 }
 
-export async function scrapeAmazonStorefront(session: ScraperSession, amazonStorefrontUrl: string): Promise<string[]> {
+export async function scrapeAmazonStorefront(session: ScraperSession, amazonStorefrontUrl: string): Promise<ScrapeResult> {
   const { page } = session;
   
-  // Transformamos la URL si es necesario para asegurarnos de que apunte directo al listado de productos de Amazon
   console.log(`[Amazon Scraper] Visitando el Storefront directamente en Amazon: ${amazonStorefrontUrl}`);
   
   await page.goto(amazonStorefrontUrl, { waitUntil: 'networkidle', timeout: 60000 });
   
-  // Espera de cortesía humana para evitar sospechas de Amazon
   const humanDelay = Math.floor(Math.random() * (10000 - 5000 + 1) + 5000);
   console.log(`[Amazon Scraper] Simulando lectura humana. Esperando ${humanDelay / 1000} segundos...`);
   await page.waitForTimeout(humanDelay);
 
-  console.log('[Amazon Scraper] Extrayendo ASINs expuestos en la tienda...');
+  console.log('[Amazon Scraper] Extrayendo ASINs, precios y ventas del DOM...');
   
-  // Selector nativo de Amazon para buscar códigos ASIN en los elementos del grid de productos
-  const extractedAsins = await page.evaluate(() => {
-    const asins: string[] = [];
+  // Extraer el nombre real de la tienda (del title o del h1)
+  const sellerName = await page.evaluate(() => {
+    // Intentar buscar el h1 prominente que suele tener el nombre del seller
+    const h1 = document.querySelector('h1#merchant-name') || document.querySelector('h1.a-size-extra-large');
+    if (h1 && h1.textContent) return h1.textContent.trim();
+    // Fallback al título de la página
+    let title = document.title || '';
+    title = title.replace('Amazon.com', '').replace('Seller Profile', '').replace(/[:|-]/g, '').trim();
+    return title || 'Vendedor Desconocido';
+  });
+
+  const extractedProducts = await page.evaluate(() => {
+    const results: ScrapedProduct[] = [];
     
-    // Buscamos en los atributos "data-asin" de los bloques de productos de Amazon
-    document.querySelectorAll('[data-asin]').forEach(el => {
+    // Buscamos los bloques de producto principales de Amazon
+    document.querySelectorAll('div[data-asin]').forEach(el => {
       const asin = el.getAttribute('data-asin')?.trim();
       if (asin && asin.length === 10 && asin.startsWith('B')) {
-        if (!asins.includes(asin)) {
-          asins.push(asin);
+        
+        // Extraer precio
+        const priceEl = el.querySelector('.a-price .a-offscreen');
+        const price = priceEl ? priceEl.textContent?.trim() || 'No disponible' : 'No disponible';
+        
+        // Extraer ventas pasadas (ej. "100+ bought in past month")
+        const salesTextEl = Array.from(el.querySelectorAll('.a-size-base, .a-color-secondary')).find(
+          e => {
+            const txt = e.textContent?.toLowerCase() || '';
+            return txt.includes('bought in past month') || txt.includes('comprados el mes pasado') || txt.includes('vendidos el mes pasado');
+          }
+        );
+        const sales = salesTextEl ? salesTextEl.textContent?.trim() || 'Sin datos de ventas' : 'Sin datos de ventas';
+
+        if (!results.find(r => r.asin === asin)) {
+          results.push({ asin, price, sales });
         }
       }
     });
 
-    // Búsqueda secundaria por expresiones regulares en enlaces por si el diseño varía
-    if (asins.length === 0) {
-      document.querySelectorAll('a').forEach(a => {
-        const href = a.getAttribute('href') || '';
-        const match = href.match(/\/dp\/([B][A-Z0-9]{9})/i) || href.match(/\/gp\/product\/([B][A-Z0-9]{9})/i);
-        if (match && match[1]) {
-          const asin = match[1].toUpperCase();
-          if (!asins.includes(asin)) {
-            asins.push(asin);
-          }
-        }
-      });
-    }
-    
-    return asins;
+    return results;
   });
 
-  return extractedAsins;
+  return { sellerName, products: extractedProducts };
 }
