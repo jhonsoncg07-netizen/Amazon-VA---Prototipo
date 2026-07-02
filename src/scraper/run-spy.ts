@@ -1,127 +1,160 @@
 import 'dotenv/config';
-import fs from 'fs/promises';
-import path from 'path';
 import { initAmazonSession, scrapeAmazonStorefront, ScrapedProduct } from './sellerAmpScraper';
-import { Competitor } from '../lib/types';
 import { getLastScan, saveScan, getCompetitors } from '../lib/db';
 
-async function sendTelegramAlert(sellerId: string, sellerName: string, product: ScrapedProduct) {
+// ─────────────────────────────────────────────────────────
+// Función utilitaria: envía cualquier texto a Telegram
+// ─────────────────────────────────────────────────────────
+async function sendTelegram(text: string, parseMode: 'Markdown' | 'HTML' | undefined = 'Markdown') {
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (!botToken || !chatId) {
-    console.warn(`⚠️ Telegram no configurado. Mensaje ignorado para ASIN: ${product.asin}`);
+    console.warn('⚠️ Telegram no configurado (TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID). Mensaje ignorado.');
     return;
   }
 
-  // Nuevo formato enriquecido
-  const message = `🔥 ¡ALERTA DE COMPETIDOR! 🔥\nVendedor: ${sellerName} (${sellerId})\nASIN: ${product.asin}\nPrecio: ${product.price}\nVentas Mes Pasado: ${product.sales}\n\nEnlace directo: https://www.amazon.com/dp/${product.asin}`;
-
-  const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-  
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         chat_id: chatId,
-        text: message,
-        disable_web_page_preview: false
+        text,
+        parse_mode: parseMode,
+        disable_web_page_preview: true
       })
     });
 
     if (!response.ok) {
-      console.error(`❌ Error enviando mensaje a Telegram: ${response.status} ${response.statusText}`);
+      const err = await response.text();
+      console.error(`❌ Error Telegram API: ${response.status} - ${err}`);
     } else {
-      console.log(`✅ Alerta de Telegram enviada exitosamente para ASIN: ${product.asin}`);
+      console.log('✅ Mensaje enviado a Telegram correctamente.');
     }
   } catch (error) {
     console.error('❌ Error de red al contactar API de Telegram:', error);
   }
 }
 
+// ─────────────────────────────────────────────────────────
+// Alerta de NUEVO PRODUCTO detectado
+// ─────────────────────────────────────────────────────────
+async function sendNewProductAlert(sellerId: string, sellerName: string, product: ScrapedProduct) {
+  const message =
+    `🔥 *¡ALERTA DE COMPETIDOR!* 🔥\n` +
+    `*Vendedor:* \`${sellerName}\` \\(${sellerId}\\)\n` +
+    `*ASIN:* \`${product.asin}\`\n` +
+    `*Precio:* ${product.price}\n` +
+    `*Ventas Mes Pasado:* ${product.sales}\n\n` +
+    `🔗 [Ver producto en Amazon](https://www.amazon.com/dp/${product.asin})`;
+
+  console.log(`📣 Enviando alerta de nuevo producto ASIN: ${product.asin}`);
+  await sendTelegram(message);
+}
+
+// ─────────────────────────────────────────────────────────
+// Confirmación de PRIMER ESCANEO (Escudo Base)
+// ─────────────────────────────────────────────────────────
+async function sendBaseSnapshotAlert(sellerId: string, sellerName: string, totalAsins: number) {
+  const message =
+    `🏬 *NUEVO COMPETIDOR REGISTRADO* 🏬\n\n` +
+    `*Vendedor:* \`${sellerName}\`\n` +
+    `*Seller ID:* \`${sellerId}\`\n` +
+    `*Estatus:* 🛡️ Escudo Base Creado Exitosamente\n\n` +
+    `━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
+    `📊 *REPORTE DE INICIO:*\n` +
+    `• Se han indexado un total de *${totalAsins}* ASINs activos en su tienda\\.\n` +
+    `• Este volumen de productos ha sido archivado de manera horizontal como tu Snapshot de control\\.\n\n` +
+    `⚠️ *NOTA:* Actualmente se está creando el historial base para este competidor\\. En esta primera vuelta no se emitirán alertas de cambios\\. A partir del próximo ciclo \\(cada 3 horas\\), recibirás las actualizaciones en tiempo real si el vendedor incluye o remueve algún ASIN de su inventario\\.`;
+
+  console.log(`🛡️ Enviando confirmación de Escudo Base para ${sellerName} con ${totalAsins} ASINs...`);
+  await sendTelegram(message);
+}
+
+// ─────────────────────────────────────────────────────────
+// Función principal: una sola pasada, compatible con GitHub Actions
+// ─────────────────────────────────────────────────────────
 async function runSpyJob() {
   console.log('\n====================================================');
-  console.log(`🕵️ Iniciando Amazon Storefront Spy - Ejecución Única (Cloud) 🕵️`);
+  console.log(`🕵️  Amazon Storefront Spy — Ejecución Única (Cloud)`);
   console.log('====================================================');
 
   const competitors = await getCompetitors();
-  
+
   if (competitors.length === 0) {
     console.log('⚠️ No hay competidores registrados. Añade uno desde la web local.');
     return;
   }
 
-  console.log(`📊 Se encontraron ${competitors.length} competidores válidos para escanear en Amazon.`);
+  console.log(`📊 ${competitors.length} competidores encontrados para escanear.`);
 
   let session;
   try {
     session = await initAmazonSession();
   } catch (error) {
-    console.error('❌ Error fatal al intentar iniciar sesión en Amazon:', error);
+    console.error('❌ Error fatal al iniciar el navegador:', error);
     return;
   }
 
   for (const competitor of competitors) {
     console.log(`\n----------------------------------------------------`);
-    console.log(`🔍 Escaneando Storefront de: ${competitor.name} (${competitor.sellerId})`);
-    
-    try {
-      const amazonStorefrontUrl = `https://www.amazon.com/s?i=merchant-items&me=${competitor.sellerId}`;
-      const scrapeResult = await scrapeAmazonStorefront(session, amazonStorefrontUrl);
+    console.log(`🔍 Escaneando: ${competitor.name} (${competitor.sellerId})`);
 
+    try {
+      const url = `https://www.amazon.com/s?i=merchant-items&me=${competitor.sellerId}`;
+      const scrapeResult = await scrapeAmazonStorefront(session, url);
       const extractedAsins = scrapeResult.products.map(p => p.asin);
 
       if (extractedAsins.length === 0) {
-        console.log(`⚠️ No se extrajo ningún ASIN para ${competitor.name}. Es posible que no tenga stock o Amazon bloqueó el request.`);
+        console.log(`⚠️ Sin ASINs para ${competitor.name}. Sin stock o bloqueado por Amazon.`);
         continue;
       }
 
-      console.log(`🧠 Comparando ${extractedAsins.length} ASINs extraídos contra el último registro local...`);
-      
       const lastScan = await getLastScan(competitor.sellerId);
-      let newAsinsDetected: string[] = [];
+      const isFirstScan = !lastScan;
 
-      if (lastScan) {
-        const previousAsinsSet = new Set(lastScan.asins);
-        newAsinsDetected = extractedAsins.filter(asin => !previousAsinsSet.has(asin));
-      }
+      const finalSellerName = (scrapeResult.sellerName && scrapeResult.sellerName !== 'Vendedor Desconocido')
+        ? scrapeResult.sellerName
+        : competitor.name;
 
-      // Guardamos en la base de datos solo la lista de ASINs planos para mantener el diseño horizontal sin romper nada
-      await saveScan(competitor.id, extractedAsins, newAsinsDetected);
+      if (isFirstScan) {
+        // ── PRIMER ESCANEO: Guardar snapshot base y notificar en Telegram ──
+        console.log(`🛡️ Primer escaneo detectado para ${finalSellerName}. Creando Snapshot Base...`);
+        await saveScan(competitor.id, extractedAsins, []); // Sin nuevos en el baseline
+        await sendBaseSnapshotAlert(competitor.sellerId, finalSellerName, extractedAsins.length);
 
-      if (newAsinsDetected.length > 0) {
-        for (const asin of newAsinsDetected) {
-          console.log(`🔥 NUEVO PRODUCTO DETECTADO: ASIN ${asin} agregado al inventario del competidor.`);
-          
-          // Encontrar la información extendida del ASIN actual para enviarla a Telegram
-          const productData = scrapeResult.products.find(p => p.asin === asin) || { 
-            asin, price: 'No disponible', sales: 'Sin datos de ventas' 
-          };
-          
-          // Enviamos la alerta enriquecida con el Nombre Real extraído de la página (o el nombre guardado como fallback)
-          const finalSellerName = scrapeResult.sellerName && scrapeResult.sellerName !== 'Vendedor Desconocido' 
-            ? scrapeResult.sellerName 
-            : competitor.name;
-
-          await sendTelegramAlert(competitor.sellerId, finalSellerName, productData);
-        }
       } else {
-        console.log(`✅ No hay productos nuevos en esta tienda.`);
+        // ── ESCANEOS SUBSECUENTES: Comparar y alertar por nuevos ASINs ──
+        const previousAsinsSet = new Set(lastScan!.asins);
+        const newAsinsDetected = extractedAsins.filter(asin => !previousAsinsSet.has(asin));
+
+        await saveScan(competitor.id, extractedAsins, newAsinsDetected);
+
+        if (newAsinsDetected.length > 0) {
+          for (const asin of newAsinsDetected) {
+            console.log(`🔥 NUEVO PRODUCTO: ${asin}`);
+            const productData = scrapeResult.products.find(p => p.asin === asin)
+              ?? { asin, price: 'No disponible', sales: 'Sin datos de ventas' };
+            await sendNewProductAlert(competitor.sellerId, finalSellerName, productData);
+          }
+        } else {
+          console.log(`✅ Sin cambios en el inventario de ${finalSellerName}.`);
+        }
       }
-      
-      console.log(`💾 Base de datos actualizada con éxito para el vendedor ${competitor.name}.`);
+
+      console.log(`💾 Base de datos actualizada para ${competitor.name}.`);
 
     } catch (error) {
-      console.error(`❌ Error procesando al competidor ${competitor.name}:`, error);
+      console.error(`❌ Error procesando ${competitor.name}:`, error);
+      // Continúa con el siguiente aunque este falle
     }
   }
 
   console.log(`\n----------------------------------------------------`);
-  console.log('🧹 Cerrando sesión del navegador...');
+  console.log('🧹 Cerrando navegador...');
   await session.browser.close();
-  
-  console.log(`🎉 Ciclo de scraping finalizado de forma exitosa.`);
+  console.log('🎉 Ciclo de scraping finalizado.');
 }
 
 runSpyJob().catch(console.error);

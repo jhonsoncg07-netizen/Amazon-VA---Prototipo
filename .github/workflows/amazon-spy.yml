@@ -6,6 +6,10 @@ on:
     - cron: '0 */3 * * *'
   workflow_dispatch: # Permite ejecutar el bot manualmente desde GitHub
 
+# Permisos explícitos para que el GITHUB_TOKEN pueda escribir en el repo
+permissions:
+  contents: write
+
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
@@ -14,7 +18,11 @@ jobs:
       - name: 📥 Checkout del repositorio
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # Necesario para hacer push de vuelta
+          # fetch-depth: 0 descarga todo el historial para que git push funcione correctamente
+          fetch-depth: 0
+          # persist-credentials inyecta el token de GitHub en la URL remota automáticamente
+          persist-credentials: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
@@ -32,22 +40,25 @@ jobs:
         env:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # En la nube, siempre corre en modo headless
           SHOW_BROWSER: false
         run: npm run spy
 
       - name: 💾 Commit y Push de los nuevos datos
         run: |
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # Añadir los cambios en la carpeta de datos
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+
+          # Aseguramos que la carpeta de datos exista (por si es la primera ejecución)
+          mkdir -p data
+
+          # Stage del archivo de base de datos horizontal
           git add data/mock-db.json
-          
-          # Verificar si hay cambios reales en el json (si no hay, el commit falla)
-          if git diff-index --quiet HEAD; then
-            echo "No hay cambios en los ASINs de los competidores."
+
+          # Verificar si hay cambios reales antes de intentar el commit
+          if git diff-index --quiet HEAD --; then
+            echo "ℹ️ No hay cambios nuevos en el inventario. Nada que pushear."
           else
-            git commit -m "🤖 Auto-update: Nuevos datos de escaneo de Amazon detectados"
-            git push
-            echo "Base de datos horizontal actualizada y pusheada al repositorio."
+            git commit -m "🤖 Auto-update [$(date -u '+%Y-%m-%d %H:%M UTC')]: Escaneo horizontal de Amazon completado"
+            git push origin HEAD:main
+            echo "✅ Base de datos horizontal actualizada y pusheada al repositorio con éxito."
           fi
