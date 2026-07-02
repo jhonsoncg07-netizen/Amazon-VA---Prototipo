@@ -1,6 +1,0 @@
-2026/06/11-03:47:04.284 1520 Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.scamadviser.com_0.indexeddb.leveldb since it was missing.
-2026/06/11-03:47:04.299 1520 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.scamadviser.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/06/11-03:47:04.315 412c Level-0 table #5: started
-2026/06/11-03:47:04.320 412c Level-0 table #5: 675 bytes OK
-2026/06/11-03:47:04.325 412c Delete type=0 #3
-2026/06/11-03:47:04.327 412c Manual compaction at level-0 from '\x00\x01\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x02\x00\x00\x00' @ 0 : 0; will stop at (end)

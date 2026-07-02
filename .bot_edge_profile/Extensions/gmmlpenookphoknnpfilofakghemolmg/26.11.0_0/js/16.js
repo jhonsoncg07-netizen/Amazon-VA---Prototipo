@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksource=self.webpackChunksource||[]).push([[16],{71016(t,s,e){async function n(t="https://www.rakuten.com/toolbar/config/settings.json"){try{return(await(await fetch(t)).json()).installed_extensions}catch(s){return}}e.d(s,{getExtensionsList:()=>n})}}]);

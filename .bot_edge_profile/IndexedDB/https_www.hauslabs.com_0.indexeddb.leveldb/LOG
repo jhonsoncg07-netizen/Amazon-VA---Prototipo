@@ -1,4 +1,0 @@
-2026/06/15-10:20:41.955 5b4 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.hauslabs.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/06/15-10:20:41.957 5b4 Recovering log #4
-2026/06/15-10:20:41.957 5b4 Reusing old log C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.hauslabs.com_0.indexeddb.leveldb/000004.log 
-2026/06/15-10:20:42.008 43dc Manual compaction at level-0 from '\x00\x02\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x03\x00\x00\x00' @ 0 : 0; will stop at (end)

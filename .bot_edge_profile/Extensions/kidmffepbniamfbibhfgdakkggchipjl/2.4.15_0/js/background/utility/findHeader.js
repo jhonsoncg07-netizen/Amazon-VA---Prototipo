@@ -1,1 +1,0 @@
-"use strict";export const findHeader=(e,t)=>{const r=new RegExp(`${t}=([^;]+);`);return{header:e.find(e=>"set-cookie"===e.name.toLowerCase()&&e.value.match(r)),regex:r}};

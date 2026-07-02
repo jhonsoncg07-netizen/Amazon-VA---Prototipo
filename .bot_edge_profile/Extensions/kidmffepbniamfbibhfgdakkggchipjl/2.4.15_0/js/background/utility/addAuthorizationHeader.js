@@ -1,1 +1,0 @@
-import{ruleNameIDs}from"../constants/ruleNameIDs.js";import{httpHeaderNames}from"../constants/httpHeaderNames.js";import{headerOperation}from"../constants/declarativeNetRequestConstants.js";import{netRequestAPI}from"./netRequestAPI.js";import{INSTANCE_PATH}from"../constants/instanceConstants.js";const EMPTY_TOKEN_LENGTH=6;export const addAuthorizationHeader=()=>{};

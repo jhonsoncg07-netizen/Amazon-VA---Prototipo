@@ -1,1 +1,0 @@
-"use strict";export const setDefaultOptions=async()=>{const s=await chrome.storage.sync.get("options"),t=s?.options;t||await chrome.storage.sync.set({options:{isShortcutVisible:!0,isAutoAnalyzer:!0,isDontAskAgain:!1,isCSPDisabled:!1}})};

@@ -1,6 +1,0 @@
-2026/07/02-01:06:32.657 b30 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\EdgeCoupons/coupons_data.db/MANIFEST-000001
-2026/07/02-01:06:32.659 b30 Recovering log #354
-2026/07/02-01:06:32.661 b30 Reusing old log C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\EdgeCoupons/coupons_data.db/000354.log 
-2026/07/02-01:06:33.196 37bc Level-0 table #359: started
-2026/07/02-01:06:33.203 37bc Level-0 table #359: 683000 bytes OK
-2026/07/02-01:06:33.207 37bc Delete type=0 #354

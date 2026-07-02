@@ -1,1 +1,0 @@
-!function(){function e(){const e=new URLSearchParams(window.location.search).get("appUrl");if(!e)return void console.error("[Proxy] No appUrl parameter found");const o=document.querySelector("#appFrame");o?o.src=e:console.error('[Proxy] No iframe with id "appFrame" found')}"loading"===document.readyState?document.addEventListener("DOMContentLoaded",e):e()}();

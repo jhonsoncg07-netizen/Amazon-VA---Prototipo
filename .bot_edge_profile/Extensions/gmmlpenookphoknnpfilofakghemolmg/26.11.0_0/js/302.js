@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunksource=self.webpackChunksource||[]).push([[302],{90302(e,s,t){t.d(s,{testAdApiRequests:()=>c});var r=t(74082);async function c(e){const s=e||"https://www.rakuten.com/api/ads?";try{return!(await fetch(s)).ok}catch(t){return r.l.error("Failed to call Ads API",t),Promise.resolve(!0)}}}}]);

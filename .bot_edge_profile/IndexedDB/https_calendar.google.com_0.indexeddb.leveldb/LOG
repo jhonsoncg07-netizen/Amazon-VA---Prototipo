@@ -1,6 +1,0 @@
-2026/07/01-16:21:50.138 32a4 Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_calendar.google.com_0.indexeddb.leveldb since it was missing.
-2026/07/01-16:21:50.149 32a4 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_calendar.google.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/07/01-17:08:56.411 32a4 Level-0 table #5: started
-2026/07/01-17:08:56.414 32a4 Level-0 table #5: 1541 bytes OK
-2026/07/01-17:08:56.417 32a4 Delete type=0 #3
-2026/07/01-17:08:56.418 32a4 Manual compaction at level-0 from (begin) .. (end); will stop at (end)

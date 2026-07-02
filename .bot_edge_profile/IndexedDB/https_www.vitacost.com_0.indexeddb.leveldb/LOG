@@ -1,6 +1,0 @@
-2026/06/20-15:51:12.499 1294 Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.vitacost.com_0.indexeddb.leveldb since it was missing.
-2026/06/20-15:51:12.524 1294 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.vitacost.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/06/20-15:53:14.749 1294 Level-0 table #5: started
-2026/06/20-15:53:14.765 1294 Level-0 table #5: 39594 bytes OK
-2026/06/20-15:53:14.776 1294 Delete type=0 #3
-2026/06/20-15:53:14.781 1294 Manual compaction at level-0 from (begin) .. (end); will stop at (end)

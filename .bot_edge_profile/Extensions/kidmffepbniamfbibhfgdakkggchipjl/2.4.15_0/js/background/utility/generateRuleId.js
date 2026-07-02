@@ -1,1 +1,0 @@
-"use strict";export const generateRuleId=(e,t)=>Number(`${e}${t}`);

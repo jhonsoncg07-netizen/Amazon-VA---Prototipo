@@ -1,1 +1,0 @@
-const NOT_INJECTABLE_TABS=["chrome://","chrome-extension://","https://chromewebstore.google.com/"];export const checkAbilityOfInjection=e=>{let o=!0;for(let t of NOT_INJECTABLE_TABS)if(0===e.indexOf(t)){o=!1;break}return o};

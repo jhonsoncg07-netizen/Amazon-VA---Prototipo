@@ -1,6 +1,0 @@
-2026/05/22-17:33:56.373 d3c Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www2.drmartypets.com_0.indexeddb.leveldb since it was missing.
-2026/05/22-17:33:56.384 d3c Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www2.drmartypets.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/05/22-17:35:14.107 5d6c Level-0 table #5: started
-2026/05/22-17:35:14.109 5d6c Level-0 table #5: 2052 bytes OK
-2026/05/22-17:35:14.112 5d6c Delete type=0 #3
-2026/05/22-17:35:14.112 5d6c Manual compaction at level-0 from (begin) .. (end); will stop at (end)

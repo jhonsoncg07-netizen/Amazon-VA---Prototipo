@@ -1,7 +1,0 @@
-2026/06/10-17:00:37.657 3298 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.linkedin.com_0.indexeddb.leveldb/MANIFEST-000001
-2026/06/10-17:00:37.659 3298 Recovering log #3
-2026/06/10-17:00:37.661 3298 Reusing old log C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.linkedin.com_0.indexeddb.leveldb/000003.log 
-2026/06/10-19:56:21.017 3298 Level-0 table #5: started
-2026/06/10-19:56:21.022 3298 Level-0 table #5: 9868 bytes OK
-2026/06/10-19:56:21.025 3298 Delete type=0 #3
-2026/06/10-19:56:21.026 3298 Manual compaction at level-0 from (begin) .. (end); will stop at (end)
