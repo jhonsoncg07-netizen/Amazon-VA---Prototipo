@@ -1,0 +1,1 @@
+"use strict";export const ubIdNames={com:"ubid-main","co.uk":"ubid-acbuk",de:"ubid-acbde",fr:"ubid-acbfr",it:"ubid-acbit",es:"ubid-acbes",ca:"ubid-acbca"};

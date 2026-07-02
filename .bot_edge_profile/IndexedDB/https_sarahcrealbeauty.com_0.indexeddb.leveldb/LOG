@@ -1,0 +1,6 @@
+2026/06/15-10:26:54.618 5b4 Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_sarahcrealbeauty.com_0.indexeddb.leveldb since it was missing.
+2026/06/15-10:26:54.630 5b4 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_sarahcrealbeauty.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/15-10:28:52.100 5d4 Level-0 table #5: started
+2026/06/15-10:28:52.103 5d4 Level-0 table #5: 1552 bytes OK
+2026/06/15-10:28:52.107 5d4 Delete type=0 #3
+2026/06/15-10:28:52.107 5d4 Manual compaction at level-0 from (begin) .. (end); will stop at (end)

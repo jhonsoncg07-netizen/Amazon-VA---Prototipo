@@ -1,0 +1,1 @@
+"use strict";export const showSasShortcuts=s=>{s?$(".sas-launch-ext-link").show():$(".sas-launch-ext-link").hide()};

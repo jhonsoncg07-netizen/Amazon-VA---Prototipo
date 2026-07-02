@@ -1,0 +1,6 @@
+2026/06/10-21:58:56.795 3298 Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_utmdistributing.com_0.indexeddb.leveldb since it was missing.
+2026/06/10-21:58:56.808 3298 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_utmdistributing.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/10-21:59:29.622 3298 Level-0 table #5: started
+2026/06/10-21:59:29.624 3298 Level-0 table #5: 2934 bytes OK
+2026/06/10-21:59:29.627 3298 Delete type=0 #3
+2026/06/10-21:59:29.627 3298 Manual compaction at level-0 from (begin) .. (end); will stop at (end)

@@ -1,0 +1,46 @@
+{
+   "action": {
+      "default_icon": "icon-32.png",
+      "default_popup": "popup.html",
+      "default_title": "TopCashback USA Get Cash Back & Coupons"
+   },
+   "author": "TopCashback",
+   "background": {
+      "service_worker": "service_worker_wrapper.js"
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "js": [ "vendors/bundle.js", "content/bundle.js" ],
+      "matches": [ "\u003Call_urls>" ],
+      "run_at": "document_idle"
+   } ],
+   "content_security_policy": {
+      "object-src": "self",
+      "script-src": "self"
+   },
+   "description": "Join over 25 million members worldwide and get money back every time you shop online.",
+   "homepage_url": "https://www.topcashback.com",
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "icon-32.png",
+      "16": "icon-32.png",
+      "18": "icon-32.png",
+      "32": "icon-32.png"
+   },
+   "incognito": "not_allowed",
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArWjD/Us5Sea1+Svdrt0FYWrX2iUp3UzizkcKeuEgIZAIzvMB5Pt/Ox15KwvVms8uxHf8iD/pUXqcLt19TzYrJ2Ru1z7+4sTwLZfvef1+K0SzoZ69tcu7c2tqd3bSquGmHLE+MkbTQFM2dVT0W//RaW6+M69MUXAhjcbR1B6OhLNWuDolZUiMTqiQuttB2qBWhrjZq/nEWgMWy8OD1M9NpUR8yO6Kl1PogZ6oUwgK8Gx1d5VTrgcBP3EnXw+WZYLh0qyhTufcg+Yqjb6Oi6fpTnKxx6r5xQe+tsPE5d4cOs6p/y15ZBA2U0j9RpMIsmExiebsjV/FLHf2eVefLL36OQIDAQAB",
+   "manifest_version": 3,
+   "name": "TopCashback USA Get Cash Back & Coupons",
+   "options_ui": {
+      "open_in_tab": true,
+      "page": "settings.html"
+   },
+   "permissions": [ "activeTab", "tabs", "webRequest", "storage", "unlimitedStorage", "cookies", "alarms", "scripting", "webNavigation" ],
+   "short_name": "TopCashback",
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "7.8.1.0",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "content/*.css", "content/*.svg", "icon-32.png", "icon-32-active.png", "icon_loop/*.png" ]
+   } ]
+}

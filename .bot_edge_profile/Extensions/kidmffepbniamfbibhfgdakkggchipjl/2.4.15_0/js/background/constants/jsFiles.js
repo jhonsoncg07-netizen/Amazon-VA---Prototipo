@@ -1,0 +1,1 @@
+"use strict";export const jsFiles=["js/vendors/jquery-3.4.1.min.js","js/vendors/jquery-ui.min.js","js/content/content.js","js/vendors/reusableDialog.js"];

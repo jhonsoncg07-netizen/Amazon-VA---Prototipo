@@ -1,0 +1,6 @@
+2026/07/02-00:53:20.202 45dc Reusing MANIFEST C:\Users\Admin\Documents\Amazon VA\amazon-storefront-spy\.bot_edge_profile\Default\EdgeCoupons/coupons_data.db/MANIFEST-000001
+2026/07/02-00:53:20.207 45dc Recovering log #13
+2026/07/02-00:53:20.208 45dc Reusing old log C:\Users\Admin\Documents\Amazon VA\amazon-storefront-spy\.bot_edge_profile\Default\EdgeCoupons/coupons_data.db/000013.log 
+2026/07/02-00:53:20.837 5164 Level-0 table #17: started
+2026/07/02-00:53:20.846 5164 Level-0 table #17: 683151 bytes OK
+2026/07/02-00:53:20.853 5164 Delete type=0 #13

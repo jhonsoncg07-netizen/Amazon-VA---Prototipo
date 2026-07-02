@@ -1,0 +1,1 @@
+"use strict";import{sentrySellerAmp}from"../../../content/sentrySellerAmp/sentrySellerAmp.js";export const connectHandler=e=>{sentrySellerAmp.wrap(function(){handleEvent(e)})};const handleEvent=e=>{e.onMessage.addListener(function(){e.postMessage({response:"Message received successfully!"})})};

@@ -1,0 +1,32 @@
+{
+   "action": {
+      "default_icon": "img/icon-48.png",
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "background.bundle.js"
+   },
+   "content_scripts": [ {
+      "css": [ "contentScript.css" ],
+      "js": [ "contentScript.bundle.js" ],
+      "matches": [ "*://*.amazon.com/*", "*://*.amazon.co.uk/*", "*://*.amazon.ca/*", "*://*.amazon.com.mx/*", "*://*.amazon.it/*", "*://*.amazon.de/*", "*://*.amazon.fr/*", "*://*.amazon.es/*", "*://*.amazon.com.au/*", "*://*.amazon.com.br/*", "*://*.amazon.nl/*", "*://*.amazon.co.jp/*", "*://*.amazon.in/*", "*://*.amazon.sg/*", "*://*.amazon.ae/*", "*://*.amazon.com.tr/*", "*://*.amazon.sa/*", "*://*.amazon.com.be/*", "*://*.amazon.eg/*", "*://*.amazon.co.za/*", "*://*.amazon.se/*", "*://*.amazon.pl/*", "*://*.ebay.com/*", "*://*.ebay.co.uk/*", "*://*.ebay.ca/*", "*://*.ebay.it/*", "*://*.ebay.de/*", "*://*.ebay.fr/*", "*://*.ebay.es/*", "*://*.ebay.com.au/*", "*://*.ebay.pl/*", "*://*.ebay.at/*", "*://*.ebay.be/*", "*://*.ebay.ie/*", "*://*.ebay.nl/*", "*://*.ebay.ch/*", "*://*.walmart.com/*", "*://totalelement.com/*", "*://*.aliexpress.com/*", "*://*.aliexpress.us/*", "*://*.grabley.net/*" ]
+   } ],
+   "default_locale": "en",
+   "description": "GRABLEY - Product Search Tools (Amazon, eBay, others...)",
+   "icons": {
+      "128": "img/icon-128.png",
+      "48": "img/icon-48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA9CTJmD1OghqPGrwvT6mXyXH4+r4N5cRG0lCdHMPveHOfDxR2DLT2WlRWQCRSw9gHcFmHQqz7oqt/kR33+s8EtK5Y7eZPu6yrXdyFXjFVcBrm03T6zTrAhDVy+VFOJktq/j0gDbuq8WvE06N5UhfkxsIv1YuJ9gNqJBamZcoibJuGXDdSmf1dnye+Th+/pye8i28/zmLLL4LWfE605bVQz0rMqOo/dqd/Vme6D5xEUmqIhIIlYg0Kou7AKug4OWy03E0htEEyBV4wT8q7xWS6KshBczZUyMfbQEqKyCCkdy6QIN1ee9NC/i8x0wfdkbKAO0ExaIxdH6BjIaSq41UHnwIDAQAB",
+   "manifest_version": 3,
+   "name": "__MSG_appName__",
+   "options_page": "options.html",
+   "permissions": [ "storage", "tabs", "contextMenus" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.4.13",
+   "web_accessible_resources": [ {
+      "extension_ids": [  ],
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "img/*.png", "img/*.svg", "img/*.gif" ]
+   } ]
+}

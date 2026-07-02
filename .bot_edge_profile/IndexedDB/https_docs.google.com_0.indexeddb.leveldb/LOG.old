@@ -1,0 +1,15 @@
+2026/06/29-20:37:56.612 2690 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_docs.google.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/29-20:37:56.615 2690 Recovering log #55
+2026/06/29-20:37:56.616 2690 Reusing old log C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_docs.google.com_0.indexeddb.leveldb/000055.log 
+2026/06/29-20:38:00.750 4584 Level-0 table #60: started
+2026/06/29-20:38:00.756 4584 Level-0 table #60: 209 bytes OK
+2026/06/29-20:38:00.764 4584 Delete type=0 #55
+2026/06/29-20:38:00.765 4584 Manual compaction at level-0 from (begin) .. (end); will stop at (end)
+2026/06/29-20:38:00.765 4584 Manual compaction at level-1 from (begin) .. (end); will stop at '\x00\x00\x00\x00\x06' @ 703 : 1
+2026/06/29-20:38:00.766 4584 Compacting 1@1 + 1@2 files
+2026/06/29-20:38:00.773 4584 Generated table #61@1: 206 keys, 3051 bytes
+2026/06/29-20:38:00.773 4584 Compacted 1@1 + 1@2 files => 3051 bytes
+2026/06/29-20:38:00.774 4584 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/06/29-20:38:00.777 4584 Delete type=2 #57
+2026/06/29-20:38:00.777 4584 Delete type=2 #60
+2026/06/29-20:38:00.780 4584 Manual compaction at level-1 from '\x00\x00\x00\x00\x06' @ 703 : 1 .. (end); will stop at (end)

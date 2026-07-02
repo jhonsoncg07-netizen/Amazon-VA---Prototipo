@@ -1,0 +1,6 @@
+2026/06/16-05:36:48.763 25b4 Creating DB C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_blyssofficial.com_0.indexeddb.leveldb since it was missing.
+2026/06/16-05:36:48.773 25b4 Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_blyssofficial.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/16-05:41:03.886 4af0 Level-0 table #5: started
+2026/06/16-05:41:03.890 4af0 Level-0 table #5: 29991 bytes OK
+2026/06/16-05:41:03.892 4af0 Delete type=0 #3
+2026/06/16-05:41:03.893 4af0 Manual compaction at level-0 from (begin) .. (end); will stop at (end)

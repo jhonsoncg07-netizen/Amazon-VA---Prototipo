@@ -1,0 +1,32 @@
+{
+   "action": {
+      "default_title": "RetailMeNot: Codes, Cash Back and Coupons"
+   },
+   "background": {
+      "service_worker": "background.bundle.js"
+   },
+   "content_scripts": [ {
+      "js": [ "inject.bundle.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_start"
+   } ],
+   "description": "Automatically finds the best promo codes and cash back as you shop online.",
+   "host_permissions": [ "*://*/*" ],
+   "icons": {
+      "128": "./html/images/icon_128.png",
+      "16": "./html/images/icon_16.png",
+      "32": "./html/images/icon_32.png",
+      "64": "./html/images/icon_64.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAqP4tuSRMfKXrnjsr7FVQJsxS+vTn1pn/t6RvSny9qfv0pnAto/ZPbJuyGlVbWMw2OVYbC0iGTkBKCwjM5kVimLbwhZ+RrTJk7ia8dbv4y6m2rtd3k+xA24TGxGWRj9a4WZxTeaIX1HpWCoCHzvhvAH9WV4LvkCoiIU/41r9rIM6tJd441ADVWSFHhdjzQjHyyHnuaJgUqHzwALg59ca3LMR0jm+ISSqd3whngP3JXbgQAj+/XBDb0MWB7NWGcfFu21SiSYyH+wlha+g4bXYp5zI/paUkaMAUQLY+F20qMIMQvVNw1944GpblmPAFvGv1wkMZqCL4P0mQBC9UqINCZwIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "88.0.0",
+   "name": "RetailMeNot: Codes, Cash Back and Coupons",
+   "permissions": [ "cookies", "scripting", "storage", "tabs", "webNavigation", "webRequest", "declarativeNetRequestWithHostAccess" ],
+   "update_url": "https://edge.microsoft.com/extensionwebstorebase/v1/crx",
+   "version": "4.23.4",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "assets/*", "html/permissions.html" ]
+   } ]
+}

@@ -1,0 +1,1 @@
+export const IS_BETA_EXTENSION=!1;

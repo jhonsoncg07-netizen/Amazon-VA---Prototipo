@@ -1,0 +1,52 @@
+{
+  "competitors": [
+    {
+      "id": "7e316160-b225-4cad-ad12-b4166182b1f1",
+      "sellerId": "A3NMB62EL9UNNS",
+      "name": "*PAMISPANAS*",
+      "sellerAmpUrl": "https://sas.selleramp.com/sas/lookup?search_term=https%3A%2F%2Fwww.amazon.com%2Fs%3Fi%3Dmerchant-items%26me%3DA3NMB62EL9UNNS%26marketplaceID%3DATVPDKIKX0DER"
+    }
+  ],
+  "scans": [
+    {
+      "id": "caf915cc-78bd-41e9-b14b-1b8ea39d59f4",
+      "competitorId": "7e316160-b225-4cad-ad12-b4166182b1f1",
+      "timestamp": "2026-07-02T03:04:55.037Z",
+      "asins": [
+        "B017L186MY",
+        "B08GG9NVRM",
+        "B09H2S679M"
+      ],
+      "newAsinsDetected": []
+    },
+    {
+      "id": "f8f7d59f-44c8-4284-9eb2-d394d4a566ac",
+      "competitorId": "7e316160-b225-4cad-ad12-b4166182b1f1",
+      "timestamp": "2026-07-02T03:07:10.219Z",
+      "asins": [
+        "B017L186MY",
+        "B08GG9NVRM",
+        "B09H2S679M",
+        "B00NEWASIN1",
+        "B00NEWASIN2"
+      ],
+      "newAsinsDetected": [
+        "B00NEWASIN1",
+        "B00NEWASIN2"
+      ]
+    },
+    {
+      "id": "29cb5fa3-69c6-48e2-99ac-9ba3b8c29839",
+      "competitorId": "7e316160-b225-4cad-ad12-b4166182b1f1",
+      "timestamp": "2026-07-02T04:02:01.766Z",
+      "asins": [
+        "B01MOCK123",
+        "B01MOCK456"
+      ],
+      "newAsinsDetected": [
+        "B01MOCK123",
+        "B01MOCK456"
+      ]
+    }
+  ]
+}

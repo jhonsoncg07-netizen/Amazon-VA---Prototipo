@@ -1,0 +1,13 @@
+2026/06/11-19:46:51.221 129c Reusing MANIFEST C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.petsuppliesplus.com_0.indexeddb.leveldb/MANIFEST-000001
+2026/06/11-19:46:51.222 129c Recovering log #17
+2026/06/11-19:46:51.223 129c Reusing old log C:\Users\Admin\AppData\Local\Microsoft\Edge\User Data\Profile 2\IndexedDB\https_www.petsuppliesplus.com_0.indexeddb.leveldb/000017.log 
+2026/06/11-19:46:51.259 1ec4 Level-0 table #22: started
+2026/06/11-19:46:51.263 1ec4 Level-0 table #22: 632 bytes OK
+2026/06/11-19:46:51.266 1ec4 Delete type=0 #17
+2026/06/11-19:46:51.267 4bb8 Manual compaction at level-0 from '\x00\x0a\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x0b\x00\x00\x00' @ 0 : 0; will stop at '\x00\x0a\x00\x00\x05' @ 206 : 1
+2026/06/11-19:46:51.268 4bb8 Compacting 1@0 + 1@1 files
+2026/06/11-19:46:51.271 4bb8 Generated table #23@0: 42 keys, 4901 bytes
+2026/06/11-19:46:51.272 4bb8 Compacted 1@0 + 1@1 files => 4901 bytes
+2026/06/11-19:46:51.273 4bb8 compacted to: files[ 0 1 1 0 0 0 0 ]
+2026/06/11-19:46:51.274 4bb8 Delete type=2 #22
+2026/06/11-19:46:51.275 4bb8 Manual compaction at level-0 from '\x00\x0a\x00\x00\x05' @ 206 : 1 .. '\x00\x0b\x00\x00\x00' @ 0 : 0; will stop at (end)

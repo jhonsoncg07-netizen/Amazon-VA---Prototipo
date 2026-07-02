@@ -1,0 +1,1 @@
+export const SAS_SESSION_ID_QUERY_PARAM_NAME="sasSessionId";export const composeSessionUrl=(s,{sasSessionId:e})=>{const o=new URL(s);return o.searchParams.set("sasSessionId",e),o.href};

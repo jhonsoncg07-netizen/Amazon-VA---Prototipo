@@ -1,0 +1,53 @@
+name: Amazon Storefront Spy - Cloud Bot
+
+on:
+  schedule:
+    # Ejecutar cada 3 horas (Minuto 0)
+    - cron: '0 */3 * * *'
+  workflow_dispatch: # Permite ejecutar el bot manualmente desde GitHub
+
+jobs:
+  run-scraper:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # Necesario para hacer push de vuelta
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: 📦 Instalar dependencias
+        run: npm ci
+
+      - name: 🌐 Instalar navegadores Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: 🕵️ Ejecutar Amazon Storefront Spy
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # En la nube, siempre corre en modo headless
+          SHOW_BROWSER: false
+        run: npm run spy
+
+      - name: 💾 Commit y Push de los nuevos datos
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Añadir los cambios en la carpeta de datos
+          git add data/mock-db.json
+          
+          # Verificar si hay cambios reales en el json (si no hay, el commit falla)
+          if git diff-index --quiet HEAD; then
+            echo "No hay cambios en los ASINs de los competidores."
+          else
+            git commit -m "🤖 Auto-update: Nuevos datos de escaneo de Amazon detectados"
+            git push
+            echo "Base de datos horizontal actualizada y pusheada al repositorio."
+          fi
