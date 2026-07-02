@@ -5,48 +5,61 @@
       "sellerId": "A3NMB62EL9UNNS",
       "name": "*PAMISPANAS*",
       "sellerAmpUrl": "https://sas.selleramp.com/sas/lookup?search_term=https%3A%2F%2Fwww.amazon.com%2Fs%3Fi%3Dmerchant-items%26me%3DA3NMB62EL9UNNS%26marketplaceID%3DATVPDKIKX0DER"
+    },
+    {
+      "id": "a4738bdb-3ac6-4922-9c5a-95cd8084e764",
+      "sellerId": "A1THC6MYE7Z561",
+      "name": "karpatia store",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "dbdb42ed-73cc-4085-98e5-31709c3a180d",
+      "sellerId": "AN8KR6LBN9WTB",
+      "name": "Loving Prime",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "045a556b-3ff3-47e2-ac6d-d002350411e2",
+      "sellerId": "A2F9LXTQ105UOM",
+      "name": "Simplicity Co.",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "24a32a35-9739-4ae4-9725-0541cfe040e5",
+      "sellerId": "A6AS3SJYWL1TE",
+      "name": "The Joyful Sparrow Co",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "ed6166e3-9a4f-43e0-86e1-421770b154ea",
+      "sellerId": "APES2OGOZ7SNZ",
+      "name": "EM FLOSS",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "4d439963-1695-432a-a056-b49ea61a53ba",
+      "sellerId": "AC3MECM8CA0W4",
+      "name": "Essential Staples",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "d2e851bb-d191-4f68-8a5d-67d7dbfac9bd",
+      "sellerId": "A12II4B4WC55G0",
+      "name": "MagmaUSA",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "00996ee4-b57e-44d4-bc89-c32c919c33d4",
+      "sellerId": "A2XDTXAL0Y367T",
+      "name": "World Source Market, LLC",
+      "sellerAmpUrl": ""
+    },
+    {
+      "id": "0b04c12c-f121-4f0e-b767-489fa3db5d7e",
+      "sellerId": "ABORCRGSPJ78Q",
+      "name": "Whale District",
+      "sellerAmpUrl": ""
     }
   ],
-  "scans": [
-    {
-      "id": "caf915cc-78bd-41e9-b14b-1b8ea39d59f4",
-      "competitorId": "7e316160-b225-4cad-ad12-b4166182b1f1",
-      "timestamp": "2026-07-02T03:04:55.037Z",
-      "asins": [
-        "B017L186MY",
-        "B08GG9NVRM",
-        "B09H2S679M"
-      ],
-      "newAsinsDetected": []
-    },
-    {
-      "id": "f8f7d59f-44c8-4284-9eb2-d394d4a566ac",
-      "competitorId": "7e316160-b225-4cad-ad12-b4166182b1f1",
-      "timestamp": "2026-07-02T03:07:10.219Z",
-      "asins": [
-        "B017L186MY",
-        "B08GG9NVRM",
-        "B09H2S679M",
-        "B00NEWASIN1",
-        "B00NEWASIN2"
-      ],
-      "newAsinsDetected": [
-        "B00NEWASIN1",
-        "B00NEWASIN2"
-      ]
-    },
-    {
-      "id": "29cb5fa3-69c6-48e2-99ac-9ba3b8c29839",
-      "competitorId": "7e316160-b225-4cad-ad12-b4166182b1f1",
-      "timestamp": "2026-07-02T04:02:01.766Z",
-      "asins": [
-        "B01MOCK123",
-        "B01MOCK456"
-      ],
-      "newAsinsDetected": [
-        "B01MOCK123",
-        "B01MOCK456"
-      ]
-    }
-  ]
+  "scans": []
 }
