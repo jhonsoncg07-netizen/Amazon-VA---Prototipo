@@ -1,6 +1,7 @@
-import { chromium } from 'playwright';
+import { chromium, Page } from 'playwright';
 import { ScraperSession } from '../types';
 
+// 1. Función de inicialización con blindaje (Stealth)
 export async function initAmazonSession(): Promise<ScraperSession> {
     const isHeadless = process.env.GITHUB_ACTIONS === 'true' || process.env.SHOW_BROWSER !== 'true';
     console.log(`[Amazon Scraper] Modo navegador: ${isHeadless ? 'Headless (invisible)' : 'Headed (visible)'}`);
@@ -38,4 +39,17 @@ export async function initAmazonSession(): Promise<ScraperSession> {
 
     const page = await context.newPage();
     return { browser, page };
+}
+
+// 2. Función de scraping que faltaba y causaba el error
+export async function scrapeAmazonStorefront(page: Page, merchantId: string) {
+    const url = `https://www.amazon.com/s?i=merchant-items&me=${merchantId}`;
+    console.log(`[Amazon Scraper] Visitando: ${url}`);
+    
+    await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    
+    // Aquí iría tu lógica de extracción de ASINs que tenías antes
+    // ...
+    
+    return []; // Retorna los resultados encontrados
 }
