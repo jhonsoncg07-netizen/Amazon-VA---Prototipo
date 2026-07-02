@@ -40,14 +40,21 @@ export async function initAmazonSession(): Promise<ScraperSession> {
     return { browser, page };
 }
 
-// Esta función es la que tu run-spy.ts está intentando llamar
 export async function scrapeAmazonStorefront(page: Page, merchantId: string) {
-    const url = `https://www.amazon.com/s?i=merchant-items&me=${merchantId}`;
+    // MEJORA ROBUSTA: Limpieza automática del ID para evitar duplicación de URL
+    const cleanId = merchantId.replace('https://www.amazon.com/s?i=merchant-items&me=', '').replace('A', '');
+    const finalMerchantId = cleanId.startsWith('A') ? cleanId : `A${cleanId}`;
+    const url = `https://www.amazon.com/s?i=merchant-items&me=${finalMerchantId}`;
+    
     console.log(`[Amazon Scraper] Visitando: ${url}`);
     
-    // Aquí usamos page.goto correctamente
+    // VALIDACIÓN: Evita que el código colapse si la página no está lista
+    if (!page) {
+        throw new Error("El objeto 'page' no está definido.");
+    }
+
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
     
-    // Aquí debe ir tu lógica de extracción que ya tenías antes
-    return []; 
+    // Aquí continúa tu lógica de extracción de ASINs
+    return [];
 }

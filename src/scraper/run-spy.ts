@@ -38,42 +38,29 @@ async function sendTelegram(text: string, parseMode: 'Markdown' | 'HTML' | undef
 }
 
 // ─────────────────────────────────────────────────────────
-// Alerta de NUEVO PRODUCTO detectado
+// Funciones de Alerta
 // ─────────────────────────────────────────────────────────
 async function sendNewProductAlert(sellerId: string, sellerName: string, product: ScrapedProduct) {
-  const message =
-    `🔥 *¡ALERTA DE COMPETIDOR!* 🔥\n` +
+  const message = `🔥 *¡ALERTA DE COMPETIDOR!* 🔥\n` +
     `*Vendedor:* \`${sellerName}\` \\(${sellerId}\\)\n` +
     `*ASIN:* \`${product.asin}\`\n` +
     `*Precio:* ${product.price}\n` +
     `*Ventas Mes Pasado:* ${product.sales}\n\n` +
     `🔗 [Ver producto en Amazon](https://www.amazon.com/dp/${product.asin})`;
-
-  console.log(`📣 Enviando alerta de nuevo producto ASIN: ${product.asin}`);
   await sendTelegram(message);
 }
 
-// ─────────────────────────────────────────────────────────
-// Confirmación de PRIMER ESCANEO (Escudo Base)
-// ─────────────────────────────────────────────────────────
 async function sendBaseSnapshotAlert(sellerId: string, sellerName: string, totalAsins: number) {
-  const message =
-    `🏬 *NUEVO COMPETIDOR REGISTRADO* 🏬\n\n` +
+  const message = `🏬 *NUEVO COMPETIDOR REGISTRADO* 🏬\n\n` +
     `*Vendedor:* \`${sellerName}\`\n` +
     `*Seller ID:* \`${sellerId}\`\n` +
     `*Estatus:* 🛡️ Escudo Base Creado Exitosamente\n\n` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━\n\n` +
-    `📊 *REPORTE DE INICIO:*\n` +
-    `• Se han indexado un total de *${totalAsins}* ASINs activos en su tienda\\.\n` +
-    `• Este volumen de productos ha sido archivado de manera horizontal como tu Snapshot de control\\.\n\n` +
-    `⚠️ *NOTA:* Actualmente se está creando el historial base para este competidor\\. En esta primera vuelta no se emitirán alertas de cambios\\. A partir del próximo ciclo \\(cada 3 horas\\), recibirás las actualizaciones en tiempo real si el vendedor incluye o remueve algún ASIN de su inventario\\.`;
-
-  console.log(`🛡️ Enviando confirmación de Escudo Base para ${sellerName} con ${totalAsins} ASINs...`);
+    `📊 *REPORTE:* Se han indexado *${totalAsins}* ASINs.`;
   await sendTelegram(message);
 }
 
 // ─────────────────────────────────────────────────────────
-// Función principal: una sola pasada, compatible con GitHub Actions
+// Función principal corregida y robusta
 // ─────────────────────────────────────────────────────────
 async function runSpyJob() {
   console.log('\n====================================================');
@@ -81,13 +68,9 @@ async function runSpyJob() {
   console.log('====================================================');
 
   const competitors = await getCompetitors();
+  if (competitors.length === 0) return;
 
-  if (competitors.length === 0) {
-    console.log('⚠️ No hay competidores registrados. Añade uno desde la web local.');
-    return;
-  }
-
-  console.log(`📊 ${competitors.length} competidores encontrados para escanear.`);
+  console.log(`📊 ${competitors.length} competidores encontrados.`);
 
   let session;
   try {
@@ -98,63 +81,43 @@ async function runSpyJob() {
   }
 
   for (const competitor of competitors) {
-    console.log(`\n----------------------------------------------------`);
-    console.log(`🔍 Escaneando: ${competitor.name} (${competitor.sellerId})`);
+    console.log(`\n🔍 Escaneando: ${competitor.name} (${competitor.sellerId})`);
 
     try {
-      const url = `https://www.amazon.com/s?i=merchant-items&me=${competitor.sellerId}`;
-      const scrapeResult = await scrapeAmazonStorefront(session, url);
+      // LLAMADA CORREGIDA: Pasamos solo session.page y el sellerId limpio
+      const scrapeResult = await scrapeAmazonStorefront(session.page, competitor.sellerId);
+      
       const extractedAsins = scrapeResult.products.map(p => p.asin);
 
       if (extractedAsins.length === 0) {
-        console.log(`⚠️ Sin ASINs para ${competitor.name}. Sin stock o bloqueado por Amazon.`);
+        console.log(`⚠️ Sin ASINs detectados para ${competitor.name}.`);
         continue;
       }
 
       const lastScan = await getLastScan(competitor.sellerId);
       const isFirstScan = !lastScan;
-
-      const finalSellerName = (scrapeResult.sellerName && scrapeResult.sellerName !== 'Vendedor Desconocido')
-        ? scrapeResult.sellerName
-        : competitor.name;
+      const finalSellerName = scrapeResult.sellerName || competitor.name;
 
       if (isFirstScan) {
-        // ── PRIMER ESCANEO: Guardar snapshot base y notificar en Telegram ──
-        console.log(`🛡️ Primer escaneo detectado para ${finalSellerName}. Creando Snapshot Base...`);
-        await saveScan(competitor.id, extractedAsins, []); // Sin nuevos en el baseline
+        await saveScan(competitor.id, extractedAsins, []);
         await sendBaseSnapshotAlert(competitor.sellerId, finalSellerName, extractedAsins.length);
-
       } else {
-        // ── ESCANEOS SUBSECUENTES: Comparar y alertar por nuevos ASINs ──
         const previousAsinsSet = new Set(lastScan!.asins);
         const newAsinsDetected = extractedAsins.filter(asin => !previousAsinsSet.has(asin));
-
         await saveScan(competitor.id, extractedAsins, newAsinsDetected);
 
-        if (newAsinsDetected.length > 0) {
-          for (const asin of newAsinsDetected) {
-            console.log(`🔥 NUEVO PRODUCTO: ${asin}`);
-            const productData = scrapeResult.products.find(p => p.asin === asin)
-              ?? { asin, price: 'No disponible', sales: 'Sin datos de ventas' };
-            await sendNewProductAlert(competitor.sellerId, finalSellerName, productData);
-          }
-        } else {
-          console.log(`✅ Sin cambios en el inventario de ${finalSellerName}.`);
+        for (const asin of newAsinsDetected) {
+          const productData = scrapeResult.products.find(p => p.asin === asin) ?? { asin, price: 'N/A', sales: 'N/A' };
+          await sendNewProductAlert(competitor.sellerId, finalSellerName, productData);
         }
       }
-
-      console.log(`💾 Base de datos actualizada para ${competitor.name}.`);
-
     } catch (error) {
       console.error(`❌ Error procesando ${competitor.name}:`, error);
-      // Continúa con el siguiente aunque este falle
     }
   }
 
-  console.log(`\n----------------------------------------------------`);
-  console.log('🧹 Cerrando navegador...');
   await session.browser.close();
-  console.log('🎉 Ciclo de scraping finalizado.');
+  console.log('\n🎉 Ciclo de scraping finalizado.');
 }
 
 runSpyJob().catch(console.error);
